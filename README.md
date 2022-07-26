@@ -153,3 +153,4 @@ You can also user the `peer` command to get the chaincode package ID.
 ```shell
 export PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid conga-nft-contract.tgz) && echo $PACKAGE_ID
 ```
+
