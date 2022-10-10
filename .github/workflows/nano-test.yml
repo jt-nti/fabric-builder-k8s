@@ -1,0 +1,40 @@
+name: Nano Tests
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ v** ]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'samples/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'samples/**'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout tools repo
+      uses: actions/checkout@v3
+      with:
+        repository: hyperledger/fabric-samples
+        path: fabric-samples
+
+    - uses: debianmaster/actions-k3s@b9cf3f599fd118699a3c8a0d18a2f2bda6cf4ce4
+      id: k3s
+      with:
+        version: 'latest'
+
+    - name: Testing
+      run: |
+        ./network.sh start
+      working-directory: fabric-samples/test-network-nano-bash
+
+kubectl cluster-info
