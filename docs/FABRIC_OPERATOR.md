@@ -7,8 +7,8 @@ The [Fabric Operator](https://github.com/hyperledger-labs/fabric-operator) inclu
 Before following [the Fabric Operator sample network instructions](https://github.com/hyperledger-labs/fabric-operator/tree/main/sample-network), export the following environment variables to use the k8s builder peer image:
 
 ```shell
-export TEST_NETWORK_PEER_IMAGE=ghcr.io/hyperledger-labs/k8s-fabric-peer
-export TEST_NETWORK_PEER_IMAGE_LABEL=v0.6.0
+export TEST_NETWORK_PEER_IMAGE=ghcr.io/hyperledger-labs/fabric-builder-k8s/k8s-fabric-peer
+export TEST_NETWORK_PEER_IMAGE_LABEL=v0.9.0
 ```
 
 To create a kind-based sample network using a [fabric-devenv](https://github.com/hyperledgendary/fabric-devenv) VM, run the following commands in the `fabric-operator/sample-network` directory:
