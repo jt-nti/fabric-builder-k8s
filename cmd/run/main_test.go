@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/bitfield/script"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 var _ = Describe("Main", func() {
@@ -60,6 +63,19 @@ var _ = Describe("Main", func() {
 			Eventually(
 				session.Err,
 			).Should(gbytes.Say(`run \[\d+\]: Running chaincode ID CHAINCODE_ID in kubernetes pod chaincode/cc-mspid-core-peer-id-abcdefghijklmnopqrstuvwxyz-0123456789chai`))
+
+			userHomeDir, err := os.UserHomeDir()
+			Expect(err).NotTo(HaveOccurred())
+
+			kubeConfigPath := filepath.Join(userHomeDir, ".kube", "config")
+
+			kubeConfig, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
+			Expect(err).NotTo(HaveOccurred())
+
+			clientset, err := kubernetes.NewForConfig(kubeConfig)
+			Expect(err).NotTo(HaveOccurred())
+
+			// To be continued...
 
 			pipe := script.Exec(
 				"kubectl wait --for=condition=ready pod --timeout=120s --namespace=chaincode -l fabric-builder-k8s-peerid=core-peer-id-abcdefghijklmnopqrstuvwxyz-0123456789",
